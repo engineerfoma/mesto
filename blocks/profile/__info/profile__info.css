@@ -1,11 +1,12 @@
 .profile__info {
     max-width: 336px;
     max-height: 73px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    row-gap: 10px;
-    margin: 22px 0 0 30px;
+    display: grid;
+    grid-template-areas: 
+    "title edit"
+    "aboutMe aboutMe";
+    column-gap: 18px;
+    margin: 26px 0 0 30px;
     padding: 0;
     list-style: none;
 }

@@ -6,6 +6,7 @@
     padding: 0;
     width: 24px;
     height: 24px;
+    grid-area: edit;
 }
 
 @media (max-width: 1022px) {

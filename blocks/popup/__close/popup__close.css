@@ -1,0 +1,21 @@
+.popup__close {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    margin: 0;
+    background: url(../../../images/Close_Icon.svg) no-repeat 50% 50%;
+}
+
+@media (max-width: 767px) {
+    .popup__close {
+        position: absolute;
+        top: -37px;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        background: url(../../../images/Close_Icon_small.svg) no-repeat 50% 50%;
+    }
+}
