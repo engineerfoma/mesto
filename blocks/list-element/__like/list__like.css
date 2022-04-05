@@ -1,4 +1,4 @@
-.list__like {
+.list-element__like {
     min-width: 22px;
     max-height: 19px;
     border: none;
@@ -7,7 +7,7 @@
     margin-top: 5px;
 }
 
-.list__like:hover {
+.list-element__like:hover {
     cursor: pointer;
     opacity: .5;
 }

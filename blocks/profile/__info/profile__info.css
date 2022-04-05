@@ -1,14 +1,13 @@
 .profile__info {
     max-width: 336px;
-    max-height: 73px;
+    min-height: 73px;
     display: grid;
     grid-template-areas: 
     "title edit"
-    "aboutMe aboutMe";
+    "aboutMe .";
     column-gap: 18px;
     margin: 26px 0 0 30px;
     padding: 0;
-    list-style: none;
 }
 
 @media (max-width: 767px) {
@@ -17,7 +16,6 @@
         min-width: 282px;
         width: 282px;
         margin: 25px auto 0;
-        row-gap: 6px;
         column-gap: 10px;
     }
 }

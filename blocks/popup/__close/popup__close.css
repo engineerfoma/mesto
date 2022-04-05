@@ -16,6 +16,6 @@
         right: 0;
         width: 20px;
         height: 20px;
-        background: url(../../../images/Close_Icon_small.svg) no-repeat 50% 50%;
+        background-size: 20px 20px;
     }
 }

@@ -9,3 +9,7 @@
     margin: 0;
     padding-bottom: 10px;
 }
+
+.popup__field:first-child {
+    margin-bottom: 30px;
+}
