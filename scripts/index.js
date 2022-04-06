@@ -20,12 +20,13 @@ function toggleModalWindow() {
 }
 
 function onSubmit(event) {
+    toggleModalWindow();
     event.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileSubtitle.textContent = aboutMeInput.value;
-    toggleModalWindow();
+    
 }
 
 profileEditButton.addEventListener('click', toggleModalWindow);
 modalCloseBtn.addEventListener('click', toggleModalWindow);
-popupSave.addEventListener('submit', onSubmit);
+form.addEventListener('submit', onSubmit);
