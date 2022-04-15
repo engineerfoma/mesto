@@ -1,0 +1,6 @@
+.popup__content_place_card {
+    max-width: 75vw;
+    max-height: 75vh;
+    padding: 0;
+    position: relative;
+}
