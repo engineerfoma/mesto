@@ -28,17 +28,17 @@ const initialCards = [
 const listContainer = document.querySelector('.list');
 const template = document.querySelector('.template');
 
-const modalWindowProfile = document.querySelector('.popup__place_profile');
+const modalWindowProfile = document.querySelector('.popup__profile');
 const profileEditBtn = document.querySelector('.profile__edit-button');
 const profileCloseBtn = document.querySelector('.popup__close_profile');
 const profileTitle = document.querySelector('.profile__title');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 
-const modalWindowCardAdd = document.querySelector('.popup__place_add-card');
+const modalWindowCardAdd = document.querySelector('.popup__add-card');
 const cardAddBtn = document.querySelector('.profile__add-button');
 const cardAddedCloseBtn = document.querySelector('.popup__close_added-card');
 
-const modalWindowCard = document.querySelector('.popup__place_card');
+const modalWindowCard = document.querySelector('.popup__card');
 const cardCloseBtn = document.querySelector('.popup__close_card');
 const card = document.querySelector('.popup__content_place');
 
