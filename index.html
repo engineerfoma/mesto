@@ -45,24 +45,25 @@
         <div class="popup__content">
             <button type="button" class="popup__close popup__close_added-card hover"></button>
             <h3 class="popup__title">Новое место</h3>
-            <form name="popup" class="popup__form">
-                <input type="text" name="field_name" placeholder="Название" class="popup__field popup__field_type_name">
-                <input type="text" name="field_about-me" placeholder="Ссылка на картинку"
-                    class="popup__field popup__field_type_about-me">
+            <form name="popup" class="popup__form_add">
+                <input type="text" name="field_title" placeholder="Название" class="popup__field popup__field_title">
+                <input type="text" name="field_source" placeholder="Ссылка на картинку"
+                    class="popup__field popup__field_source">
                 <button type="submit" class="popup__save popup__save_card">Создать</button>
             </form>
         </div>
-    </div>
+    </div>  
     <div class="popup popup__place_card">
-        <div class="popup__content">
+        <div class="popup__content_place">
             <img class="popup__content_place_card">
             <button type="button" class="popup__close popup__close_card hover"></button>
-            <p class="popup__title popup__title_card"></p>
+            <p class="popup__title_card"></p>
         </div>
     </div>
     <template class="template">
-        <li class="list-element">
+        <li class="list-element pointer">
             <img class="list-element__picture">
+            <button type="button" class="list-element__trash hover"></button>
             <div class="list-element__header">
                 <h2 class="list-element__title"></h2>
                 <button type="button" class="list-element__like"></button>
