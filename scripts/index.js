@@ -55,7 +55,7 @@ const cardTitle = card.querySelector('.popup__title_card');
 const render = () => {
     const html = initialCards.map(getElement);
     listContainer.prepend(...html);
-}
+};
 
 const getElement = item => {
     const newItem = template.content.cloneNode(true);
@@ -73,15 +73,14 @@ const getElement = item => {
         cardPictures.src = item.link;
         cardPictures.alt = item.name;
 
-        toggleModalWindow(modalWindowCard);
+        handlePopupCard();
     });
 
     likeBtn.addEventListener('click', getLike);
-
     trash.addEventListener('click', removeCard);
 
     return newItem;
-}
+};
 
 const getLike = evt => {
     const element = evt.target.closest('.list-element__like');
@@ -93,41 +92,47 @@ const removeCard = event => {
     element.remove();
 };
 
-const toggleModalWindow = (popupName) => {
-    if (popupName.classList.contains('popup_opened') === true) {
-        popupName.classList.toggle('popup_opened');
-    } else {
-        popupName.classList.toggle('popup_opened');
-        nameInput.value = profileTitle.textContent;
-        aboutMeInput.value = profileSubtitle.textContent;
-    }
-}
+const openPopup = (popupName) => popupName.classList.add('popup_opened');
+const closePopup = (popupName) => popupName.classList.remove('popup_opened');
 
-const handlePopupProfile = () => toggleModalWindow(modalWindowProfile);
-const handlePopupAddedCard = () => toggleModalWindow(modalWindowCardAdd);
-const handlePopupCard = () => toggleModalWindow(modalWindowCard);
+const handlePopupProfile = () => {
+    nameInput.value = profileTitle.textContent;
+    aboutMeInput.value = profileSubtitle.textContent;
+
+    openPopup(modalWindowProfile);
+};
+
+const handlePopupProfileClose = () => closePopup(modalWindowProfile);
+
+const handlePopupAddedCard = () => openPopup(modalWindowCardAdd);
+const handlePopupAddedClose = () => closePopup(modalWindowCardAdd);
+
+const handlePopupCard = () => openPopup(modalWindowCard);
+const handlePopupCardClose = () => closePopup(modalWindowCard);
 
 const onSubmit = event => {
-    toggleModalWindow();
-    event.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileSubtitle.textContent = aboutMeInput.value;
-}
+};
 
 const handleSaveCard = event => {
-    modalWindowCardAdd.classList.remove('popup_opened');
     event.preventDefault();
     const titleInput = document.querySelector('.popup__field_title').value;
-    const sourceInput = document.querySelector('.popup__field_source').value;
+    const sourceInput = document.querySelector('.popup__field_source').value; /*если вынести в глобальную область видимости, подгружается пуста карточка */
     const element = getElement({ name: titleInput, link: sourceInput });
     listContainer.prepend(element);
-}
+    handlePopupAddedClose();
+    document.querySelector('.popup__field_title').value = '';/* если пишу в формате "titleInput = '';" - ничего не получается */
+    document.querySelector('.popup__field_source').value = '';
+};
 
 profileEditBtn.addEventListener('click', handlePopupProfile);
-profileCloseBtn.addEventListener('click', handlePopupProfile);
+profileCloseBtn.addEventListener('click', handlePopupProfileClose);
+
 cardAddBtn.addEventListener('click', handlePopupAddedCard);
-cardAddedCloseBtn.addEventListener('click', handlePopupAddedCard);
-cardCloseBtn.addEventListener('click', handlePopupCard);
+cardAddedCloseBtn.addEventListener('click', handlePopupAddedClose);
+
+cardCloseBtn.addEventListener('click', handlePopupCardClose);
 
 formAdd.addEventListener('submit', handleSaveCard);
 formEdit.addEventListener('submit', onSubmit);
