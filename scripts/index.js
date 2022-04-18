@@ -42,12 +42,15 @@ const modalWindowCard = document.querySelector('.popup_card');
 const cardCloseBtn = document.querySelector('.popup__close_card');
 const card = document.querySelector('.popup__content_place');
 
-const form = document.querySelector('.popup__form');
+const formEdit = document.querySelector('.popup__form');
 const formAdd = document.querySelector('.popup__form_add');
-const nameInput = form.querySelector('.popup__field_type_name');
-const aboutMeInput = form.querySelector('.popup__field_type_about-me');
-const popupSave = form.querySelector('.popup__save');
+const nameInput = formEdit.querySelector('.popup__field_type_name');
+const aboutMeInput = formEdit.querySelector('.popup__field_type_about-me');
+const popupSave = formEdit.querySelector('.popup__save');
 const popupSaveCard = document.querySelector('.popup__save_card');
+
+const cardPictures = card.querySelector('.popup__img');
+const cardTitle = card.querySelector('.popup__title_card');
 
 const render = () => {
     const html = initialCards.map(getElement);
@@ -66,15 +69,11 @@ const getElement = item => {
     image.alt = item.name;
 
     image.addEventListener('click', () => {
-
-        toggleModalWindow(modalWindowCard);
-
-        const cardPictures = card.querySelector('.popup__img');
-        const cardTitle = card.querySelector('.popup__title_card');
-
         cardTitle.textContent = item.name;
         cardPictures.src = item.link;
         cardPictures.alt = item.name;
+
+        toggleModalWindow(modalWindowCard);
     });
 
     likeBtn.addEventListener('click', getLike);
@@ -131,6 +130,6 @@ cardAddedCloseBtn.addEventListener('click', handlePopupAddedCard);
 cardCloseBtn.addEventListener('click', handlePopupCard);
 
 formAdd.addEventListener('submit', handleSaveCard);
-form.addEventListener('submit', onSubmit);
+formEdit.addEventListener('submit', onSubmit);
 
 render();
