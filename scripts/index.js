@@ -52,6 +52,9 @@ const popupSaveCard = document.querySelector('.popup__save_card');
 const cardPictures = card.querySelector('.popup__img');
 const cardTitle = card.querySelector('.popup__title_card');
 
+const formAddTitleInputField = formAdd.querySelector('.popup__field_title');
+const formAddSourceInputField = formAdd.querySelector('.popup__field_source');
+
 const render = () => {
     const html = initialCards.map(getElement);
     listContainer.prepend(...html);
@@ -73,7 +76,7 @@ const getElement = item => {
         cardPictures.src = item.link;
         cardPictures.alt = item.name;
 
-        handlePopupCard();
+        openPopup(modalWindowCard);
     });
 
     likeBtn.addEventListener('click', getLike);
@@ -107,23 +110,21 @@ const handlePopupProfileClose = () => closePopup(modalWindowProfile);
 const handlePopupAddedCard = () => openPopup(modalWindowCardAdd);
 const handlePopupAddedClose = () => closePopup(modalWindowCardAdd);
 
-const handlePopupCard = () => openPopup(modalWindowCard);
 const handlePopupCardClose = () => closePopup(modalWindowCard);
 
-const onSubmit = event => {
+const onSubmit = event => { 
+    event.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileSubtitle.textContent = aboutMeInput.value;
+    handlePopupProfileClose();
 };
 
 const handleSaveCard = event => {
     event.preventDefault();
-    const titleInput = document.querySelector('.popup__field_title').value;
-    const sourceInput = document.querySelector('.popup__field_source').value; /*если вынести в глобальную область видимости, подгружается пуста карточка */
-    const element = getElement({ name: titleInput, link: sourceInput });
+    const element = getElement({ name: formAddTitleInputField.value, link: formAddSourceInputField.value });
     listContainer.prepend(element);
     handlePopupAddedClose();
-    document.querySelector('.popup__field_title').value = '';/* если пишу в формате "titleInput = '';" - ничего не получается */
-    document.querySelector('.popup__field_source').value = '';
+    formAdd.reset();
 };
 
 profileEditBtn.addEventListener('click', handlePopupProfile);
