@@ -44,16 +44,16 @@ const card = document.querySelector('.popup__content_place');
 
 const formEdit = document.querySelector('.popup__form');
 const formAdd = document.querySelector('.popup__form_add');
-const nameInput = formEdit.querySelector('.popup__field_type_name');
-const aboutMeInput = formEdit.querySelector('.popup__field_type_about-me');
+const nameInput = formEdit.querySelector('.popup__input_type_name');
+const aboutMeInput = formEdit.querySelector('.popup__input_type_about-me');
 const popupSave = formEdit.querySelector('.popup__save');
 const popupSaveCard = document.querySelector('.popup__save_card');
 
 const cardPictures = card.querySelector('.popup__img');
 const cardTitle = card.querySelector('.popup__title_card');
 
-const formAddTitleInputField = formAdd.querySelector('.popup__field_title');
-const formAddSourceInputField = formAdd.querySelector('.popup__field_source');
+const formAddTitleInputField = formAdd.querySelector('.popup__input_title');
+const formAddSourceInputField = formAdd.querySelector('.popup__input_source'); 
 
 const render = () => {
     const html = initialCards.map(getElement);
@@ -66,6 +66,7 @@ const getElement = item => {
     const title = newItem.querySelector('.list-element__title');
     const likeBtn = newItem.querySelector('.list-element__like');
     const trash = newItem.querySelector('.list-element__trash');
+    
 
     title.textContent = item.name;
     image.src = item.link;
@@ -85,8 +86,8 @@ const getElement = item => {
     return newItem;
 };
 
-const getLike = evt => {
-    const element = evt.target.closest('.list-element__like');
+const getLike = event => {
+    const element = event.target.closest('.list-element__like');
     element.classList.toggle('list-element__like_active');
 };
 
@@ -108,19 +109,20 @@ const handlePopupProfile = () => {
 const handlePopupProfileClose = () => closePopup(modalWindowProfile);
 
 const handlePopupAddedCard = () => openPopup(modalWindowCardAdd);
+
 const handlePopupAddedClose = () => closePopup(modalWindowCardAdd);
 
 const handlePopupCardClose = () => closePopup(modalWindowCard);
 
 const onSubmit = event => { 
-    event.preventDefault();
+    // event.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileSubtitle.textContent = aboutMeInput.value;
     handlePopupProfileClose();
 };
 
 const handleSaveCard = event => {
-    event.preventDefault();
+    // event.preventDefault();
     const element = getElement({ name: formAddTitleInputField.value, link: formAddSourceInputField.value });
     listContainer.prepend(element);
     handlePopupAddedClose();
