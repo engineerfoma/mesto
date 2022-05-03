@@ -47,6 +47,8 @@ const formAdd = document.querySelector('.popup__form_add');
 const nameInput = formEdit.querySelector('.popup__input_type_name');
 const aboutMeInput = formEdit.querySelector('.popup__input_type_about-me');
 const popupSave = formEdit.querySelector('.popup__save');
+const popupSaveDisabled = formEdit.querySelector('.popup__save_profile');
+
 const popupSaveCard = document.querySelector('.popup__save_card');
 
 const cardPictures = card.querySelector('.popup__img');
@@ -102,7 +104,8 @@ const closePopup = (popupName) => popupName.classList.remove('popup_opened');
 const handlePopupProfile = () => {
     nameInput.value = profileTitle.textContent;
     aboutMeInput.value = profileSubtitle.textContent;
-
+    popupSaveDisabled.disabled = false;
+    popupSaveDisabled.classList.remove('popup__save_disabled');
     openPopup(modalWindowProfile);
 };
 
