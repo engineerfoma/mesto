@@ -51,33 +51,11 @@ const hasInvalidInput = inputList => {
     return !inputElement.validity.valid;
   });
 };
-  
-const onOverlayClick = (config)=> {
-  const popups = Array.from(document.querySelectorAll(config.popup));
-  popups.forEach(popup => {
-    popup.addEventListener('click', event => {
-      if (event.target === event.currentTarget) {
-        popup.classList.remove('popup_opened');
-      }
-    });
-    popup.addEventListener('keydown', event => {
-      if (event.key === 'Escape') {
-        popup.classList.remove('popup_opened');
-        console.log(event);
-      }
-    });
-  });
-};
 
 const enableValidation = config => {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
   
   formList.forEach(formElement => {
-    formElement.addEventListener('submit', e => e.preventDefault());
-    
-
-    onOverlayClick(config);
-    
     setEventListeners(formElement, config);
   });
 };
@@ -88,6 +66,5 @@ enableValidation({
   submitButtonSelector: '.popup__save',
   inactiveButtonClass: 'popup__save_disabled',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible',
-  popup: '.popup'
+  errorClass: 'popup__error_visible'
 }); 

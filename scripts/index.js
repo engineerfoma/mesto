@@ -1,30 +1,3 @@
-const initialCards = [
-    {
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        name: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-];
-
 const listContainer = document.querySelector('.list');
 const template = document.querySelector('.template');
 
@@ -57,9 +30,9 @@ const cardTitle = card.querySelector('.popup__title_card');
 const formAddTitleInputField = formAdd.querySelector('.popup__input_title');
 const formAddSourceInputField = formAdd.querySelector('.popup__input_source'); 
 
-const render = () => {
-    const html = initialCards.map(getElement);
-    listContainer.prepend(...html);
+const renderCard = () => {
+    const cards = initialCards.map(getElement);
+    listContainer.prepend(...cards);
 };
 
 const getElement = item => {
@@ -89,8 +62,7 @@ const getElement = item => {
 };
 
 const getLike = event => {
-    const element = event.target.closest('.list-element__like');
-    element.classList.toggle('list-element__like_active');
+    event.target.classList.toggle('list-element__like_active');
 };
 
 const removeCard = event => {
@@ -98,8 +70,33 @@ const removeCard = event => {
     element.remove();
 };
 
-const openPopup = (popupName) => popupName.classList.add('popup_opened');
-const closePopup = (popupName) => popupName.classList.remove('popup_opened');
+const onEscPress = (event) => {
+    const popup = document.querySelector('.popup_opened');
+    if (event.key === 'Escape') {
+        popup.classList.remove('popup_opened');
+    }
+};
+
+const onOverlayClick = () => {
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(popup => {
+        popup.addEventListener('click', event => {
+            if (event.target === event.currentTarget) {
+            popup.classList.remove('popup_opened');
+            };
+        });
+    });
+};
+
+const openPopup = (popupName) => {
+    popupName.classList.add('popup_opened');
+    document.addEventListener('keydown', onEscPress);
+};
+
+const closePopup = (popupName) => {
+    popupName.classList.remove('popup_opened');
+    document.removeEventListener('keydown', onEscPress);
+};
 
 const handlePopupProfile = () => {
     nameInput.value = profileTitle.textContent;
@@ -117,19 +114,21 @@ const handlePopupAddedClose = () => closePopup(modalWindowCardAdd);
 
 const handlePopupCardClose = () => closePopup(modalWindowCard);
 
-const onSubmit = event => { 
-    // event.preventDefault();
+const handleProfileFormSubmit = event => { 
+    event.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileSubtitle.textContent = aboutMeInput.value;
     handlePopupProfileClose();
 };
 
 const handleSaveCard = event => {
-    // event.preventDefault();
+    event.preventDefault();
     const element = getElement({ name: formAddTitleInputField.value, link: formAddSourceInputField.value });
     listContainer.prepend(element);
     handlePopupAddedClose();
     formAdd.reset();
+    popupSaveCard.disabled = true;
+    popupSaveCard.classList.add('popup__save_disabled');
 };
 
 profileEditBtn.addEventListener('click', handlePopupProfile);
@@ -141,6 +140,8 @@ cardAddedCloseBtn.addEventListener('click', handlePopupAddedClose);
 cardCloseBtn.addEventListener('click', handlePopupCardClose);
 
 formAdd.addEventListener('submit', handleSaveCard);
-formEdit.addEventListener('submit', onSubmit);
+formEdit.addEventListener('submit', handleProfileFormSubmit);
 
-render();
+onOverlayClick();
+
+renderCard();
