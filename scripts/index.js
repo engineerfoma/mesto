@@ -71,9 +71,9 @@ const removeCard = event => {
 };
 
 const onEscPress = (event) => {
-    const popup = document.querySelector('.popup_opened');
     if (event.key === 'Escape') {
-        popup.classList.remove('popup_opened');
+        const popup = document.querySelector('.popup_opened');
+        closePopup(popup);
     }
 };
 
@@ -82,7 +82,7 @@ const onOverlayClick = () => {
     popups.forEach(popup => {
         popup.addEventListener('click', event => {
             if (event.target === event.currentTarget) {
-            popup.classList.remove('popup_opened');
+                closePopup(popup);
             };
         });
     });
