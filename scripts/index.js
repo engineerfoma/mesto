@@ -1,3 +1,5 @@
+import {Card, initialCards} from './cards.js';
+
 const listContainer = document.querySelector('.list');
 const template = document.querySelector('.template');
 
@@ -11,7 +13,7 @@ const modalWindowCardAdd = document.querySelector('.popup_add-card');
 const cardAddBtn = document.querySelector('.profile__add-button');
 const cardAddedCloseBtn = document.querySelector('.popup__close_added-card');
 
-const modalWindowCard = document.querySelector('.popup_card');
+export const modalWindowCard = document.querySelector('.popup_card');
 const cardCloseBtn = document.querySelector('.popup__close_card');
 const card = document.querySelector('.popup__content_place');
 
@@ -23,52 +25,64 @@ const popupSave = formEdit.querySelector('.popup__save');
 const popupSaveDisabled = formEdit.querySelector('.popup__save_profile');
 
 const popupSaveCard = document.querySelector('.popup__save_card');
-
-const cardPictures = card.querySelector('.popup__img');
 const cardTitle = card.querySelector('.popup__title_card');
+const cardPictures = card.querySelector('.popup__img');
 
 const formAddTitleInputField = formAdd.querySelector('.popup__input_title');
 const formAddSourceInputField = formAdd.querySelector('.popup__input_source'); 
 
-const renderCard = () => {
-    const cards = initialCards.map(getElement);
-    listContainer.prepend(...cards);
-};
 
-const getElement = item => {
-    const newItem = template.content.cloneNode(true);
-    const image = newItem.querySelector('.list-element__picture');
-    const title = newItem.querySelector('.list-element__title');
-    const likeBtn = newItem.querySelector('.list-element__like');
-    const trash = newItem.querySelector('.list-element__trash');
+const ivo = () => {
+    cardTitle.textContent = card.name;
+    cardPictures.src = card.link;
+    cardPictures.alt = card.name;
+    openPopup(modalWindowCard);
+};
+// const renderCard = () => {
+//     const cards = initialCards.map(getElement);
+//     listContainer.prepend(...cards);
+// };
+
+// const getElement = item => {
+//     const newItem = template.content.cloneNode(true);
+//     const image = newItem.querySelector('.list-element__picture');
+//     const title = newItem.querySelector('.list-element__title');
+//     const likeBtn = newItem.querySelector('.list-element__like');
+//     const trash = newItem.querySelector('.list-element__trash');
+
+//     title.textContent = item.name;
+//     image.src = item.link;
+//     image.alt = item.name;
+
+//     image.addEventListener('click', () => {
+//         cardTitle.textContent = item.name;
+//         cardPictures.src = item.link;
+//         cardPictures.alt = item.name;
+
+//         openPopup(modalWindowCard);
+//     });
+
+//     likeBtn.addEventListener('click', getLike);
+//     trash.addEventListener('click', removeCard);
+
+//     return newItem;
+// };
+
+// const getLike = event => {
+//     event.target.classList.toggle('list-element__like_active');
+// };
+
+// const removeCard = event => {
+//     const element = event.target.closest('.list-element');
+//     element.remove();
+// };
+
+initialCards.forEach(item => {
+    const card = new Card(item, '.template', ivo);
+    const cardElement = card.generateCard();
     
-
-    title.textContent = item.name;
-    image.src = item.link;
-    image.alt = item.name;
-
-    image.addEventListener('click', () => {
-        cardTitle.textContent = item.name;
-        cardPictures.src = item.link;
-        cardPictures.alt = item.name;
-
-        openPopup(modalWindowCard);
-    });
-
-    likeBtn.addEventListener('click', getLike);
-    trash.addEventListener('click', removeCard);
-
-    return newItem;
-};
-
-const getLike = event => {
-    event.target.classList.toggle('list-element__like_active');
-};
-
-const removeCard = event => {
-    const element = event.target.closest('.list-element');
-    element.remove();
-};
+    document.querySelector('.list').append(cardElement);
+});
 
 const onEscPress = (event) => {
     if (event.key === 'Escape') {
@@ -144,4 +158,4 @@ formEdit.addEventListener('submit', handleProfileFormSubmit);
 
 onOverlayClick();
 
-renderCard();
+// renderCard();

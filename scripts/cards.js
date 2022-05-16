@@ -1,4 +1,4 @@
-const initialCards = [
+export const initialCards = [
     {
         name: 'Архыз',
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -25,20 +25,18 @@ const initialCards = [
     }
 ];
 
-
-const popupImage = document.querySelector('.popup__img');
-
 export class Card {
 
-    constructor(cards, itemTemplate, formSelector) {
-        this._cards = cards;
-        this._template = itemTemplate;
+    constructor(cards, cardSelecor, openPopupCard) {
+        this._name = cards.name;
+        this._link = cards.link;
+        this._cardSelecor = cardSelecor;
+        this._openPopup = openPopupCard;
     }
-    генерирует новую карточку 
-    слушатели обработчики кликов на кнопку удаление лайк и открытие попапа
-    _getTemplate() {
+    // слушатели обработчики кликов на кнопку удаление лайк и открытие попапа
+    _getTemplate = () => {
         const cardElement = document
-            .querySelector(this.template)
+            .querySelector(this._cardSelecor)
             .content
             .querySelector('.list-element')
             .cloneNode(true);
@@ -46,24 +44,20 @@ export class Card {
         return cardElement;
     }
 
-    _handleOpenPopup(popupName) {
-        popupImage.src = this._link;
-        popupName.classList.add('popup_opened');
-        document.addEventListener('keydown', onEscPress);
+    _setAddEventListeners = () => {
+        this._element.querySelector('.list-element__picture').addEventListener('click', this._openPopup)
     }
 
-    _handleClosePopup(popupName) {
-        popupImage.src = '';
-        popupName.classList.remove('popup_opened');
-        document.removeEventListener('keydown', onEscPress);
-    }
+    generateCard = () => {
+        this._element = this._getTemplate();
+        this._setAddEventListeners();
 
-    _setEventListeners() {
-        this.element.addEventListener('click', () => {
-            this._handleOpenPopup(popupName);
-        });
+        this._element.querySelector('.list-element__picture').src = this._link;
+        this._element.querySelector('.list-element__title').textContent = this._name;
 
+        return this._element;
     }
+    
 }
 
 // const items = [
