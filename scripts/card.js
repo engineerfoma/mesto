@@ -40,9 +40,9 @@ export class Card {
         this._setAddEventListeners();
 
         this._element.querySelector('.list-element__picture').src = this._link;
+        this._element.querySelector('.list-element__picture').alt = this._name;
         this._element.querySelector('.list-element__title').textContent = this._name;
 
         return this._element;
     }
-    
 }

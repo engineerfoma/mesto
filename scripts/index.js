@@ -1,6 +1,6 @@
-import { Card } from './card.js';
+import { Card } from './Card.js';
 import { initialCards } from './cards.js';
-import { FormValidator } from './validate.js';
+import { FormValidator } from './FormValidator.js';
 import { validationConfig } from './utils.js';
 
 const listContainer = document.querySelector('.list');
@@ -51,7 +51,7 @@ initialCards.forEach(item => {
 
     const cardElement = card.generateCard();
     
-    document.querySelector('.list').append(cardElement);
+    listContainer.append(cardElement);
 });
 
 const onEscPress = (event) => {
@@ -85,24 +85,15 @@ const closePopup = (popupName) => {
 const handlePopupProfile = () => {
     nameInput.value = profileTitle.textContent;
     aboutMeInput.value = profileSubtitle.textContent;
-    popupSaveDisabled.disabled = false;
     popupSaveDisabled.classList.remove('popup__save_disabled');
     openPopup(modalWindowProfile);
 };
-
-const handlePopupProfileClose = () => closePopup(modalWindowProfile);
-
-const handlePopupAddedCard = () => openPopup(modalWindowCardAdd);
-
-const handlePopupAddedClose = () => closePopup(modalWindowCardAdd);
-
-const handlePopupCardClose = () => closePopup(modalWindowCard);
 
 const handleProfileFormSubmit = event => { 
     event.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileSubtitle.textContent = aboutMeInput.value;
-    handlePopupProfileClose();
+    closePopup(modalWindowProfile);
 };
 
 const handleSaveCard = event => {
@@ -121,20 +112,17 @@ const handleSaveCard = event => {
 
     listContainer.prepend(cardElement);
 
-    handlePopupAddedClose();
+    closePopup(modalWindowCardAdd);
     formAdd.reset();
-
-    popupSaveCard.disabled = true;
-    popupSaveCard.classList.add('popup__save_disabled');
 };
 
 profileEditBtn.addEventListener('click', handlePopupProfile);
-profileCloseBtn.addEventListener('click', handlePopupProfileClose);
+profileCloseBtn.addEventListener('click', () => closePopup(modalWindowProfile));
 
-cardAddBtn.addEventListener('click', handlePopupAddedCard);
-cardAddedCloseBtn.addEventListener('click', handlePopupAddedClose);
+cardAddBtn.addEventListener('click', () => openPopup(modalWindowCardAdd));
+cardAddedCloseBtn.addEventListener('click', () => closePopup(modalWindowCardAdd));
 
-cardCloseBtn.addEventListener('click', handlePopupCardClose);
+cardCloseBtn.addEventListener('click', () => closePopup(modalWindowCard));
 
 formAdd.addEventListener('submit', handleSaveCard);
 formEdit.addEventListener('submit', handleProfileFormSubmit);

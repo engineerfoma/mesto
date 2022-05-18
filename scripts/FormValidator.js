@@ -45,11 +45,13 @@ export class FormValidator {
 
   enableValidation = () => {
     const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
-
+    
+    
     inputList.forEach(inputElement => {
+      this._toggleButtonState(inputList);
       inputElement.addEventListener('input', () => {
-        this._checkInputValidity(inputElement);
         this._toggleButtonState(inputList);
+        this._checkInputValidity(inputElement);
       });
     });
   }
