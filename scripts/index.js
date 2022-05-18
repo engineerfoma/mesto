@@ -1,18 +1,9 @@
-import {Card} from './card.js';
-import {initialCards} from './cards.js';
+import { Card } from './card.js';
+import { initialCards } from './cards.js';
 import { FormValidator } from './validate.js';
-
-enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__save',
-    inactiveButtonClass: 'popup__save_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  });
+import { validationConfig } from './utils.js';
 
 const listContainer = document.querySelector('.list');
-const template = document.querySelector('.template');
 
 const modalWindowProfile = document.querySelector('.popup_profile');
 const profileEditBtn = document.querySelector('.profile__edit-button');
@@ -32,7 +23,6 @@ const formEdit = document.querySelector('.popup__form');
 const formAdd = document.querySelector('.popup__form_add');
 const nameInput = formEdit.querySelector('.popup__input_type_name');
 const aboutMeInput = formEdit.querySelector('.popup__input_type_about-me');
-const popupSave = formEdit.querySelector('.popup__save');
 const popupSaveDisabled = formEdit.querySelector('.popup__save_profile');
 
 const popupSaveCard = document.querySelector('.popup__save_card');
@@ -49,7 +39,10 @@ const handleSaveCardTemplate = (name, link) => {
     openPopup(modalWindowCard);
 }
 
-const popupProfile = new FormValidator (enableValidation, )
+const formProfile = new FormValidator(validationConfig, formEdit);
+const formCardAdd = new FormValidator(validationConfig, formAdd);
+formProfile.enableValidation();
+formCardAdd.enableValidation();
 
 initialCards.forEach(item => {
     const card = new Card(item, '.template', () => {
@@ -119,9 +112,11 @@ const handleSaveCard = event => {
         name: formAddTitleInputField.value, 
         link: formAddSourceInputField.value 
     };
+
     const card = new Card(objInputSaveCard, '.template', () => {
         handleSaveCardTemplate(objInputSaveCard.name, objInputSaveCard.link);
     });
+
     const cardElement = card.generateCard();
 
     listContainer.prepend(cardElement);
@@ -131,7 +126,6 @@ const handleSaveCard = event => {
 
     popupSaveCard.disabled = true;
     popupSaveCard.classList.add('popup__save_disabled');
-
 };
 
 profileEditBtn.addEventListener('click', handlePopupProfile);
