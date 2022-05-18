@@ -1,4 +1,15 @@
-import {Card, initialCards} from './cards.js';
+import {Card} from './card.js';
+import {initialCards} from './cards.js';
+import { FormValidator } from './validate.js';
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save',
+    inactiveButtonClass: 'popup__save_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
 
 const listContainer = document.querySelector('.list');
 const template = document.querySelector('.template');
@@ -31,12 +42,18 @@ const cardPictures = card.querySelector('.popup__img');
 const formAddTitleInputField = formAdd.querySelector('.popup__input_title');
 const formAddSourceInputField = formAdd.querySelector('.popup__input_source'); 
 
+const handleSaveCardTemplate = (name, link) => {
+    cardTitle.textContent = name;
+    cardPictures.src = link;
+    cardPictures.alt = name;
+    openPopup(modalWindowCard);
+}
+
+const popupProfile = new FormValidator (enableValidation, )
+
 initialCards.forEach(item => {
     const card = new Card(item, '.template', () => {
-        cardTitle.textContent = item.name;
-        cardPictures.src = item.link;
-        cardPictures.alt = item.name;
-        openPopup(modalWindowCard);
+        handleSaveCardTemplate(item.name, item.link);
     });
 
     const cardElement = card.generateCard();
@@ -97,12 +114,24 @@ const handleProfileFormSubmit = event => {
 
 const handleSaveCard = event => {
     event.preventDefault();
-    const element = getElement({ name: formAddTitleInputField.value, link: formAddSourceInputField.value });
-    listContainer.prepend(element);
+
+    const objInputSaveCard = { 
+        name: formAddTitleInputField.value, 
+        link: formAddSourceInputField.value 
+    };
+    const card = new Card(objInputSaveCard, '.template', () => {
+        handleSaveCardTemplate(objInputSaveCard.name, objInputSaveCard.link);
+    });
+    const cardElement = card.generateCard();
+
+    listContainer.prepend(cardElement);
+
     handlePopupAddedClose();
     formAdd.reset();
+
     popupSaveCard.disabled = true;
     popupSaveCard.classList.add('popup__save_disabled');
+
 };
 
 profileEditBtn.addEventListener('click', handlePopupProfile);
