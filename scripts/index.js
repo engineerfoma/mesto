@@ -1,7 +1,9 @@
-import { Card } from './Card.js';
+import Card from './Card.js';
 import { initialCards } from './cards.js';
-import { FormValidator } from './FormValidator.js';
+import FormValidator from './FormValidator.js';
 import { validationConfig } from './utils.js';
+
+import Section from './components/Section.js';
 
 const listContainer = document.querySelector('.list');
 
@@ -25,7 +27,6 @@ const nameInput = formEdit.querySelector('.popup__input_type_name');
 const aboutMeInput = formEdit.querySelector('.popup__input_type_about-me');
 const popupSaveDisabled = formEdit.querySelector('.popup__save_profile');
 
-const popupSaveCard = document.querySelector('.popup__save_card');
 const cardTitle = card.querySelector('.popup__title_card');
 const cardPictures = card.querySelector('.popup__img');
 
@@ -44,15 +45,28 @@ const formCardAdd = new FormValidator(validationConfig, formAdd);
 formProfile.enableValidation();
 formCardAdd.enableValidation();
 
-initialCards.forEach(item => {
-    const card = new Card(item, '.template', () => {
-        handleSaveCardTemplate(item.name, item.link);
-    });
+// initialCards.forEach(item => {
+//     const card = new Card(item, '.template', () => {
+//         handleSaveCardTemplate(item.name, item.link);
+//     });
 
-    const cardElement = card.generateCard();
+//     const cardElement = card.generateCard();
     
-    listContainer.append(cardElement);
-});
+//     listContainer.append(cardElement);
+// });
+
+const defaultCardList = new Section ({
+    items: initialCards,
+    renderer: (item) => {
+        const card = new Card(item, '.template', () => {
+            handleSaveCardTemplate(item.name, item.link);
+        });
+
+        const cardElement = card.generateCard();
+
+        defaultCardList.addItem(cardElement);
+    }
+}, listContainer);
 
 const onEscPress = (event) => {
     if (event.key === 'Escape') {
@@ -128,3 +142,5 @@ formAdd.addEventListener('submit', handleSaveCard);
 formEdit.addEventListener('submit', handleProfileFormSubmit);
 
 onOverlayClick();
+
+defaultCardList.rendererItems();
