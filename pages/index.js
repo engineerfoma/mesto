@@ -1,12 +1,12 @@
-import Card from './components/Card.js';
-import { initialCards } from './cards.js';
-import FormValidator from './components/FormValidator.js';
-import { validationConfig } from './utils.js';
-import PopupWithForm from './components/PopupWithForm.js';
+import Card from '../components/Card.js';
+import { initialCards } from '../constants/cards.js';
+import FormValidator from '../components/FormValidator.js';
+import { validationConfig } from '../constants/utils.js';
+import PopupWithForm from '../components/PopupWithForm.js';
 
-import Section from './components/Section.js';
-import PopupWithImage from './components/PopupWithImage.js';
-import UserInfo from './components/UserInfo.js';
+import Section from '../components/Section.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import UserInfo from '../components/UserInfo.js';
 
 const formEdit = document.querySelector('.popup__form');
 const formAdd = document.querySelector('.popup__form_add');
