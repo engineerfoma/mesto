@@ -10,14 +10,14 @@ export default class Card {
         const cardElement = document
             .querySelector(this._cardSelecor)
             .content
-            .querySelector('.list-element')
+            .querySelector('.list-element') 
             .cloneNode(true);
 
         return cardElement;
     }
 
-    _handlePhotoClick = () => {
-        this._handlePhotoClick(this.link, this.name);
+    _handleClick = () => {
+        this._handlePhotoClick(this._name, this._link)
     }
 
     _handleLikeElement = (event) => {
@@ -29,7 +29,7 @@ export default class Card {
     }
 
     _setAddEventListeners = () => {
-        this._element.querySelector('.list-element__picture').addEventListener('click', this._handlePhotoClick);
+        this._element.querySelector('.list-element__picture').addEventListener('click', this._handleClick);
         this._element.querySelector('.list-element__like').addEventListener('click', this._handleLikeElement);
         this._element.querySelector('.list-element__trash').addEventListener('click', this._handleRemoveElement);
     }

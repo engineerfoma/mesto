@@ -43,9 +43,13 @@ export default class FormValidator {
     });
   }
 
+  checkFormValidity = () => {
+    const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
+    this._toggleButtonState(inputList);
+  }
+
   enableValidation = () => {
     const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
-    
     
     inputList.forEach(inputElement => {
       this._toggleButtonState(inputList);
