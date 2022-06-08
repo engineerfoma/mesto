@@ -1,21 +1,12 @@
+import { initialCards, validationConfig, formEdit, formAdd, 
+    listContainer, profileEditBtn, cardAddBtn } 
+from '../utils/constants.js';
 import Card from '../components/Card.js';
-import { initialCards } from '../constants/cards.js';
 import FormValidator from '../components/FormValidator.js';
-import { validationConfig } from '../constants/utils.js';
 import PopupWithForm from '../components/PopupWithForm.js';
-
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
-
-const formEdit = document.querySelector('.popup__form');
-const formAdd = document.querySelector('.popup__form_add');
-
-const listContainer = document.querySelector('.list');
-
-const profileEditBtn = document.querySelector('.profile__edit-button');
-
-const cardAddBtn = document.querySelector('.profile__add-button');
 
 const formProfile = new FormValidator(validationConfig, formEdit);
 const formCardAdd = new FormValidator(validationConfig, formAdd);
