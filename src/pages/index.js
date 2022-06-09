@@ -1,3 +1,4 @@
+import './index.css';
 import { initialCards, validationConfig, formEdit, formAdd, 
     listContainer, profileEditBtn, cardAddBtn } 
 from '../utils/constants.js';
