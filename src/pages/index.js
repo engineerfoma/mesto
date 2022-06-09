@@ -1,6 +1,6 @@
 import './index.css';
 import { initialCards, validationConfig, formEdit, formAdd, 
-    listContainer, profileEditBtn, cardAddBtn } 
+    listContainer, profileEditBtn, cardAddBtn, inputName, inputAboutMe } 
 from '../utils/constants.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
@@ -16,26 +16,25 @@ formCardAdd.enableValidation();
 
 const popupWithImage = new PopupWithImage('.popup_card');
 
-const card = (item) => {
+const createCard = (item) => {
     const card = new Card(item, '.template', () => popupWithImage.open(item));
 
     return card.generateCard();
 }
 
-const handleDefaultCardList = new Section({
+const DefaultCardList = new Section({
     items: initialCards,
     renderer: (item) => {
-        const cardElement = card(item);
+        const cardElement = createCard(item);
        
-        handleDefaultCardList.addItem(cardElement);
+        DefaultCardList.addItem(cardElement);
     }
 }, listContainer);
 
 const popupCardAdd = new PopupWithForm('.popup_add-card',
     { submitHandler: ({ field_title: name, field_source: link }) => {
-        const newCard = card({ name, link });
-        handleDefaultCardList.addItem(newCard);
-        formProfile.checkFormValidity();
+        const newCard = createCard({ name, link });
+        DefaultCardList.addItem(newCard);
         popupCardAdd.close();
         }
     }
@@ -52,14 +51,14 @@ const popupEditProfile = new PopupWithForm('.popup_profile',
 );
 
 const handleOpenPopupProfile = () => {
-    const { nameSelector: name, aboutMeSelector: job } = userInfo.getUserInfo();
-    document.querySelector('.popup__input_type_name').value = name;
-    document.querySelector('.popup__input_type_about-me').value = job;
+    const { name: name, aboutMe: job } = userInfo.getUserInfo();
+    inputName.value = name;
+    inputAboutMe.value = job;
     formProfile.checkFormValidity();
     popupEditProfile.openPopup();
 };
 
-handleDefaultCardList.rendererItems();
+DefaultCardList.rendererItems();
 profileEditBtn.addEventListener('click', handleOpenPopupProfile);
 cardAddBtn.addEventListener('click', () => {
     popupCardAdd.openPopup();

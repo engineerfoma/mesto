@@ -41,4 +41,7 @@ const listContainer = document.querySelector('.list');
 const profileEditBtn = document.querySelector('.profile__edit-button');
 const cardAddBtn = document.querySelector('.profile__add-button');
 
-export { initialCards, validationConfig, formEdit, formAdd, listContainer, profileEditBtn, cardAddBtn };
+const inputName = document.querySelector('.popup__input_type_name');
+const inputAboutMe =  document.querySelector('.popup__input_type_about-me');
+
+export { initialCards, validationConfig, formEdit, formAdd, listContainer, profileEditBtn, cardAddBtn, inputName, inputAboutMe };
