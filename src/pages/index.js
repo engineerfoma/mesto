@@ -8,6 +8,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
+import Api from '../components/Api.js';
 
 const formProfile = new FormValidator(validationConfig, formEdit);
 const formCardAdd = new FormValidator(validationConfig, formAdd);
@@ -22,14 +23,30 @@ const createCard = (item) => {
     return card.generateCard();
 }
 
-const DefaultCardList = new Section({
-    items: initialCards,
-    renderer: (item) => {
-        const cardElement = createCard(item);
+const api = new Api('https://mesto.nomoreparties.co/v1/cohort-43/', 'b95d65c3-3fd9-4b99-9ec8-1daeaeb60353');
+    
+api.getCards()
+    .then((cards) => {
+        const DefaultCardList = new Section({
+            items: cards,
+            renderer: (item) => {
+                const cardElement = createCard(item);
+               
+                DefaultCardList.addItem(cardElement);
+            }
+        }, listContainer);
+        DefaultCardList.rendererItems();
+    })
+    .catch(err => console.log(err));
+    console.log(api.getCards);
+// const DefaultCardList = new Section({
+//     items: initialCards,
+//     renderer: (item) => {
+//         const cardElement = createCard(item);
        
-        DefaultCardList.addItem(cardElement);
-    }
-}, listContainer);
+//         DefaultCardList.addItem(cardElement);
+//     }
+// }, listContainer);
 
 const popupCardAdd = new PopupWithForm('.popup_add-card',
     { submitHandler: ({ field_title: name, field_source: link }) => {
@@ -39,6 +56,14 @@ const popupCardAdd = new PopupWithForm('.popup_add-card',
         }
     }
 );
+
+// const addCardHandler = ({ field_title: name, field_source: link }) => {
+//     api.addCard({ field_title: name, field_source: link });
+// };
+
+// const popupCardAdd = new PopupWithForm('.popup_add-card',
+//     { submitHandler: addCardHandler }
+// );
 
 const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle' });
 
@@ -58,11 +83,12 @@ const handleOpenPopupProfile = () => {
     popupEditProfile.openPopup();
 };
 
-DefaultCardList.rendererItems();
+// DefaultCardList.rendererItems();
+
 profileEditBtn.addEventListener('click', handleOpenPopupProfile);
 cardAddBtn.addEventListener('click', () => {
+    formCardAdd.resetValidation();
     popupCardAdd.openPopup();
-    formCardAdd.checkFormValidity();
 });
 popupCardAdd.setEventListeners();
 popupEditProfile.setEventListeners();
