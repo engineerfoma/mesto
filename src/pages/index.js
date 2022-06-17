@@ -38,7 +38,7 @@ api.getCards()
         DefaultCardList.rendererItems();
     })
     .catch(err => console.log(err));
-    console.log(api.getCards);
+
 // const DefaultCardList = new Section({
 //     items: initialCards,
 //     renderer: (item) => {
@@ -48,22 +48,24 @@ api.getCards()
 //     }
 // }, listContainer);
 
-const popupCardAdd = new PopupWithForm('.popup_add-card',
-    { submitHandler: ({ field_title: name, field_source: link }) => {
-        const newCard = createCard({ name, link });
-        DefaultCardList.addItem(newCard);
-        popupCardAdd.close();
-        }
-    }
-);
-
-// const addCardHandler = ({ field_title: name, field_source: link }) => {
-//     api.addCard({ field_title: name, field_source: link });
-// };
-
 // const popupCardAdd = new PopupWithForm('.popup_add-card',
-//     { submitHandler: addCardHandler }
+//     { submitHandler: ({ field_title: name, field_source: link }) => {
+//         const newCard = createCard({ name, link });
+//         DefaultCardList.addItem(newCard);
+//         popupCardAdd.close();
+//         }
+//     }
 // );
+
+const addCardHandler = ({ field_title: name, field_source: link }) => {
+    
+    api.addCard({ field_title: name, field_source: link });
+    popupCardAdd.close();
+};
+
+const popupCardAdd = new PopupWithForm('.popup_add-card',
+    { submitHandler: addCardHandler }
+);
 
 const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle' });
 
