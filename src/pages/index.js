@@ -1,6 +1,6 @@
 import './index.css';
 import { initialCards, validationConfig, formEdit, formAdd, 
-    listContainer, profileEditBtn, cardAddBtn, inputName, inputAboutMe } 
+    listContainer, profileEditBtn, cardAddBtn, inputName, inputAboutMe, profileAvatar } 
 from '../utils/constants.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
@@ -15,6 +15,15 @@ const formCardAdd = new FormValidator(validationConfig, formAdd);
 formProfile.enableValidation();
 formCardAdd.enableValidation();
 
+// const deleteCardHandler = (cardId) {
+//     api.deleteCard(cardId)
+//         .then((res) => {
+            
+//             popupEditProfile.close();
+//         })
+//         .catch(err => console.log(`${err}`));
+// }                                               , deleteCardHandler
+
 const popupWithImage = new PopupWithImage('.popup_card');
 
 const createCard = (item) => {
@@ -23,49 +32,53 @@ const createCard = (item) => {
     return card.generateCard();
 }
 
+const cardList = new Section ({
+    renderer: (item) => {
+        const cardElement = createCard(item);
+        cardList.addItem(cardElement);
+    }
+}, listContainer)
+
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-43/', 'b95d65c3-3fd9-4b99-9ec8-1daeaeb60353');
-    
+
 api.getCards()
-    .then((cards) => {
-        const DefaultCardList = new Section({
-            items: cards,
+    .then(cards => {
+        const CardList = new Section({
             renderer: (item) => {
                 const cardElement = createCard(item);
                
-                DefaultCardList.addItem(cardElement);
+                CardList.addItem(cardElement);
             }
         }, listContainer);
-        DefaultCardList.rendererItems();
+        CardList.rendererItems(cards);
     })
-    .catch(err => console.log(err));
-
-// const DefaultCardList = new Section({
-//     items: initialCards,
-//     renderer: (item) => {
-//         const cardElement = createCard(item);
-       
-//         DefaultCardList.addItem(cardElement);
-//     }
-// }, listContainer);
-
-// const popupCardAdd = new PopupWithForm('.popup_add-card',
-//     { submitHandler: ({ field_title: name, field_source: link }) => {
-//         const newCard = createCard({ name, link });
-//         DefaultCardList.addItem(newCard);
-//         popupCardAdd.close();
-//         }
-//     }
-// );
+    .catch(err => console.log(`${err}`));
 
 const addCardHandler = ({ field_title: name, field_source: link }) => {
-    
-    api.addCard({ field_title: name, field_source: link });
-    popupCardAdd.close();
+    api.addCard({ field_title: name, field_source: link })
+        .then(data => {
+            cardList.addItem(createCard(data));
+            popupCardAdd.close();
+        })
+        .catch(err => console.log(`${err}`));
 };
 
 const popupCardAdd = new PopupWithForm('.popup_add-card',
-    { submitHandler: addCardHandler }
-);
+    { submitHandler: addCardHandler });
+
+const handleOpenPopupProfile = () => {
+    api.getUserInfo()
+        .then(data => {
+            userInfo.getUserInfo(data);
+            inputName.value = data.name;
+            inputAboutMe.value = data.about;
+            console.log(data.avatar);
+            profileAvatar.src = data.avatar;
+            formProfile.checkFormValidity();
+            popupEditProfile.openPopup();
+        })
+        .catch(err => console.log(`Ошибка: ${err}`));
+}
 
 const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle' });
 
@@ -77,15 +90,13 @@ const popupEditProfile = new PopupWithForm('.popup_profile',
     }
 );
 
-const handleOpenPopupProfile = () => {
-    const { name: name, aboutMe: job } = userInfo.getUserInfo();
-    inputName.value = name;
-    inputAboutMe.value = job;
-    formProfile.checkFormValidity();
-    popupEditProfile.openPopup();
-};
-
-// DefaultCardList.rendererItems();
+// const handleOpenPopupProfile = () => {
+//     const { name: name, aboutMe: job } = userInfo.getUserInfo();
+//     inputName.value = name;
+//     inputAboutMe.value = job;
+//     formProfile.checkFormValidity();
+//     popupEditProfile.openPopup();
+// };
 
 profileEditBtn.addEventListener('click', handleOpenPopupProfile);
 cardAddBtn.addEventListener('click', () => {
