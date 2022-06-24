@@ -1,5 +1,5 @@
 import './index.css';
-import { initialCards, validationConfig, formEdit, formAdd, 
+import { validationConfig, formEdit, formAdd, 
     listContainer, profileEditBtn, cardAddBtn, inputName, inputAboutMe, profileAvatar } 
 from '../utils/constants.js';
 import Card from '../components/Card.js';
@@ -9,26 +9,54 @@ import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
-import { data } from 'autoprefixer';
+import PopupWithConfirm from '../components/PopupWithConfirm.js';
 
 const formProfile = new FormValidator(validationConfig, formEdit);
 const formCardAdd = new FormValidator(validationConfig, formAdd);
 formProfile.enableValidation();
 formCardAdd.enableValidation();
 
-// const deleteCardHandler = (cardId) {
-//     api.deleteCard(cardId)
-//         .then((res) => {
-            
-//             popupEditProfile.close();
-//         })
-//         .catch(err => console.log(`${err}`));
-// }                                               , deleteCardHandler
-
 const popupWithImage = new PopupWithImage('.popup_card');
+const popupDeleteConfirm  = new PopupWithConfirm('.popup_confirm');
+const api = new Api('https://mesto.nomoreparties.co/v1/cohort-43/', 'b95d65c3-3fd9-4b99-9ec8-1daeaeb60353');
+const popupCardAdd = new PopupWithForm('.popup_add-card',
+    { submitHandler: addCardHandler });
+const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle', avatar: '.profile__avatar' });
+
+
+const handleCardRemove = card => {
+    popupDeleteConfirm.open();
+    popupDeleteConfirm.setSubmitAction(() => {
+        api.deleteCard(card.getCardId)
+            .then(() => {
+                card.deleteCard();
+                popupDeleteConfirm.closePopup();
+            })
+            .catch(err => console.log(`Ошибка: ${err}`));
+    });
+}
+
+const handleLike = card => {
+    card.isLiked() ? 
+        (api.deleteLike(card.getCardId)
+            .then(res => card.counterLikes(res.Likes))
+            .catch(err => console.log(`Ошибка: ${err}`))) :
+        (api.addLike(card.getCardId)
+            .then(res => card.counterLikes(res.Likes))
+            .catch(err => console.log(`Ошибка: ${err}`)));
+}
+
+const handleImageClick = (item) => popupWithImage.open(item);
 
 const createCard = (item) => {
-    const card = new Card(item, '.template', () => popupWithImage.open(item));
+    const card = new Card(
+        item,
+        '.template',
+        handleImageClick,
+        handleCardRemove,
+        handleLike,
+        userInfo.getUserId()
+        );
 
     return card.generateCard();
 }
@@ -38,37 +66,16 @@ const cardList = new Section ({
         const cardElement = createCard(item);
         cardList.addItem(cardElement);
     }
-}, listContainer)
-
-const api = new Api('https://mesto.nomoreparties.co/v1/cohort-43/', 'b95d65c3-3fd9-4b99-9ec8-1daeaeb60353');
-
-api.getCards()
-    .then(cards => {
-        const CardList = new Section({
-            renderer: (item) => {
-                const cardElement = createCard(item);
-               
-                CardList.addItem(cardElement);
-            }
-        }, listContainer);
-        CardList.rendererItems(cards);
-        
-    })
-    .catch(err => console.log(`${err}`));
+}, listContainer);
 
 const addCardHandler = ({ field_title: name, field_source: link }) => {
     api.addCard({ field_title: name, field_source: link })
         .then(data => {
-            cardList.addItem(createCard(data));
             popupCardAdd.close();
+            return cardList.addItem(createCard(data));
         })
         .catch(err => console.log(`${err}`));
 };
-
-const popupCardAdd = new PopupWithForm('.popup_add-card',
-    { submitHandler: addCardHandler });
-    
-const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle', avatar: '.profile__avatar' });
  
 const popupEditProfile = new PopupWithForm('.popup_profile',
     { submitHandler: (userData) => {
@@ -104,8 +111,7 @@ Promise.all([api.getUserInfo(), api.getCards()])
         userInfo.setUserAvatar(dataUserInfo.avatar);
         userInfo.setUserId(dataUserInfo._id);
         cardList.rendererItems(cards);
-    })
-
+    });
 
 // const handleOpenPopupProfile = () => {
 //     const { name: name, aboutMe: job } = userInfo.getUserInfo();
@@ -123,3 +129,4 @@ cardAddBtn.addEventListener('click', () => {
 popupCardAdd.setEventListeners();
 popupEditProfile.setEventListeners();
 popupWithImage.setEventListeners();
+popupDeleteConfirm.setEventListeners();

@@ -22,13 +22,12 @@ export default class PopupWithForm extends Popup {
     //     });
     // } не совсем понимаю как реализовать этот метод, если мне нужно в input.value вставлять изначально вставлять то, что находится в элементе с классами profile__title, profile__subtitle
 
-    setEventListeners() {
-        
+    setEventListeners() {   
+        super.setEventListeners();
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
             this._submitHandler(this._getInputValues());
-        })
-        super.setEventListeners();
+        });
     }
 
     close = () => {

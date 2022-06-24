@@ -3,6 +3,7 @@ export default class UserInfo {
         this._userName = document.querySelector(name);
         this._userJob = document.querySelector(job);
         this._userAvatar = document.querySelector(avatar);
+        this._userId = null;
     }
 
     getUserInfo() {
