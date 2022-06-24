@@ -10,14 +10,17 @@
 @import url(../blocks/profile/__edit-button/profile__edit-button.css);
 @import url(../blocks/profile/__subtitle/profile__subtitle.css);
 @import url(../blocks/profile/__add-button/profile__add-button.css);
+@import url(../blocks/profile/__avatar/_edit/profile__avatar_edit.css);
 @import url(../blocks/list/list.css);
 @import url(../blocks/list-element/list-element.css);
 @import url(../blocks/list-element/__header/list-element__header.css);
+@import url(../blocks/list-element/__container/list-element__container.css);
 @import url(../blocks/list-element/__title/list-element__title.css);
 @import url(../blocks/list-element/__like/list-element__like.css);
 @import url(../blocks/list-element/__like/_active/list-element__like_active.css);
 @import url(../blocks/list-element/__trash/list-element__trash.css);
 @import url(../blocks/list-element/__picture/list-element__picture.css);
+@import url(../blocks/list-element/_counter-likes/list-element__counter-likes.css);
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
 @import url(../blocks/hover/hover.css);

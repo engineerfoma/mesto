@@ -9,6 +9,7 @@ import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
+import { data } from 'autoprefixer';
 
 const formProfile = new FormValidator(validationConfig, formEdit);
 const formCardAdd = new FormValidator(validationConfig, formAdd);
@@ -51,6 +52,7 @@ api.getCards()
             }
         }, listContainer);
         CardList.rendererItems(cards);
+        
     })
     .catch(err => console.log(`${err}`));
 
@@ -65,6 +67,20 @@ const addCardHandler = ({ field_title: name, field_source: link }) => {
 
 const popupCardAdd = new PopupWithForm('.popup_add-card',
     { submitHandler: addCardHandler });
+    
+const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle', avatar: '.profile__avatar' });
+ 
+const popupEditProfile = new PopupWithForm('.popup_profile',
+    { submitHandler: (userData) => {
+        api.setUserInfo(userData)
+            .then(res => {
+                userInfo.setUserInfo({ name: res.name, about: res.about });
+                popupEditProfile.close();
+            })
+            .catch(err => console.log(`Ошибка: ${err}`));
+        }
+    }
+);
 
 const handleOpenPopupProfile = () => {
     api.getUserInfo()
@@ -72,23 +88,24 @@ const handleOpenPopupProfile = () => {
             userInfo.getUserInfo(data);
             inputName.value = data.name;
             inputAboutMe.value = data.about;
-            console.log(data.avatar);
-            profileAvatar.src = data.avatar;
             formProfile.checkFormValidity();
             popupEditProfile.openPopup();
         })
         .catch(err => console.log(`Ошибка: ${err}`));
 }
 
-const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle' });
+// const popupEditavatar = new PopupWithForm(
 
-const popupEditProfile = new PopupWithForm('.popup_profile',
-    { submitHandler: (data) => {
-        userInfo.setUserInfo(data);
-        popupEditProfile.close();
-        }
-    }
-);
+// )
+
+Promise.all([api.getUserInfo(), api.getCards()])
+    .then(([dataUserInfo, cards]) => {
+        userInfo.setUserInfo(dataUserInfo);
+        userInfo.setUserAvatar(dataUserInfo.avatar);
+        userInfo.setUserId(dataUserInfo._id);
+        cardList.rendererItems(cards);
+    })
+
 
 // const handleOpenPopupProfile = () => {
 //     const { name: name, aboutMe: job } = userInfo.getUserInfo();

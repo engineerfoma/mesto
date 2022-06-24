@@ -2,6 +2,7 @@ export default class Card {
     constructor(cards, cardSelecor, handlePhotoClick) {
         this._name = cards.name;
         this._link = cards.link;
+        this._likes = cards.likes;
         this._cardSelecor = cardSelecor;
         this._handlePhotoClick = handlePhotoClick;
     }
@@ -28,6 +29,11 @@ export default class Card {
         this._element.remove();
     }
 
+    counterLikes(likes) {
+        this._likes = likes;
+        // this._
+    }
+
     _setAddEventListeners = () => {
         this.cardImage.addEventListener('click', this._handleClick);
         this._element.querySelector('.list-element__like').addEventListener('click', this._handleLikeElement);
@@ -42,6 +48,10 @@ export default class Card {
         this.cardImage.src = this._link;
         this.cardImage.alt = this._name;
         this._element.querySelector('.list-element__title').textContent = this._name;
+        
+        this._titleCounterLikes = this._element.querySelector('.list-element__counter-likes');
+
+        this._titleCounterLikes.textContent = this._likes.length;
 
         return this._element;
     }

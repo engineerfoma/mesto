@@ -1,10 +1,9 @@
 .list-element__like {
-    min-width: 22px;
-    max-height: 19px;
+    width: 22px;
+    height: 19px;
     border: none;
     background: url(../../../images/like.svg) no-repeat 50% 50%;
-    padding: 0;
-    margin-top: 5px;
+    padding-bottom: 5px;
 }
 
 .list-element__like:hover {
