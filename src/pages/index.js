@@ -19,47 +19,7 @@ formCardAdd.enableValidation();
 const popupWithImage = new PopupWithImage('.popup_card');
 const popupDeleteConfirm  = new PopupWithConfirm('.popup_confirm');
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-43/', 'b95d65c3-3fd9-4b99-9ec8-1daeaeb60353');
-const popupCardAdd = new PopupWithForm('.popup_add-card',
-    { submitHandler: addCardHandler });
 const userInfo = new UserInfo({ name: '.profile__title', job: '.profile__subtitle', avatar: '.profile__avatar' });
-
-
-const handleCardRemove = card => {
-    popupDeleteConfirm.open();
-    popupDeleteConfirm.setSubmitAction(() => {
-        api.deleteCard(card.getCardId)
-            .then(() => {
-                card.deleteCard();
-                popupDeleteConfirm.closePopup();
-            })
-            .catch(err => console.log(`Ошибка: ${err}`));
-    });
-}
-
-const handleLike = card => {
-    card.isLiked() ? 
-        (api.deleteLike(card.getCardId)
-            .then(res => card.counterLikes(res.Likes))
-            .catch(err => console.log(`Ошибка: ${err}`))) :
-        (api.addLike(card.getCardId)
-            .then(res => card.counterLikes(res.Likes))
-            .catch(err => console.log(`Ошибка: ${err}`)));
-}
-
-const handleImageClick = (item) => popupWithImage.open(item);
-
-const createCard = (item) => {
-    const card = new Card(
-        item,
-        '.template',
-        handleImageClick,
-        handleCardRemove,
-        handleLike,
-        userInfo.getUserId()
-        );
-
-    return card.generateCard();
-}
 
 const cardList = new Section ({
     renderer: (item) => {
@@ -68,15 +28,83 @@ const cardList = new Section ({
     }
 }, listContainer);
 
+const createCard = (item) => {
+    const card = new Card(
+        item,
+        '.template',
+        () => popupWithImage.open(item),
+        card => {
+            popupDeleteConfirm.setSubmitAction(() => {
+                api.deleteCard(card.getCardId())
+                .then(() => {
+                    card.removeElement();
+                    popupDeleteConfirm.closePopup();
+                })
+                .catch(err => console.log(`Ошибка: ${err}`));
+            });
+            popupDeleteConfirm.openPopup();
+        },
+        card => {
+            console.log(card);
+            api.addLike(card)
+                .then(res => {
+                    card.likeAdd(res.Likes);
+                })
+                .catch(err => console.log(`Ошибка: ${err}`));
+            },
+        card => {
+            api.deleteLike(card)
+                .then(res => {
+                    card.likeRemove(res.Likes);
+                })
+                .catch(err => console.log(`Ошибка: ${err}`));
+        },
+        userInfo.getUserId()
+        );
+        
+    return card.generateCard();
+}
+
+
+// const handleAddLike = card => {
+//     api.addLike(card)
+//         .then(res => card.likeAdd(res))
+//         .catch(err => console.log(`Ошибка: ${err}`));
+// }
+
+// const handleRemoveLike = card => {
+//     api.removeLike(card)
+//         .then(res => card.likeRemove(res))
+//         .catch(err => console.log(`Ошибка: ${err}`));
+// }
+
+// const handleCardRemove = card => {
+//     popupDeleteConfirm.openPopup();
+//     popupDeleteConfirm.setSubmitAction(() => {
+//         api.deleteCard(card.getCardId)
+//             .then(() => {
+//                 card.deleteCard();
+//                 popupDeleteConfirm.closePopup();
+//             })
+//             .catch(err => console.log(`Ошибка: ${err}`));
+//     });
+// }
+
+// const handleImageClick = (item) => popupWithImage.open(item);
+
+
 const addCardHandler = ({ field_title: name, field_source: link }) => {
     api.addCard({ field_title: name, field_source: link })
-        .then(data => {
-            popupCardAdd.close();
-            return cardList.addItem(createCard(data));
-        })
-        .catch(err => console.log(`${err}`));
+    .then(data => {
+        popupCardAdd.close();
+        return cardList.addItem(createCard(data));
+    })
+    .catch(err => console.log(`${err}`));
 };
- 
+
+const popupCardAdd = new PopupWithForm('.popup_add-card',
+    { submitHandler: addCardHandler });
+
 const popupEditProfile = new PopupWithForm('.popup_profile',
     { submitHandler: (userData) => {
         api.setUserInfo(userData)
