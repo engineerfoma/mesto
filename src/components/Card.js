@@ -43,8 +43,8 @@ export default class Card {
     }
     
     _isLikeState = () => {
-        this._isLiked() ? this.likeRemove(this._cards) : this.likeAdd(this._cards);
-        // this._isLiked() ? this._handleRemoveLike(this._cards) : this._handleAddLike(this._cards);
+        // this._isLiked() ? this.likeRemove(this._cards) : this.likeAdd(this._cards);
+        this._isLiked() ? this._handleRemoveLike(this._cards) : this._handleAddLike(this._cards);
 
     }
     

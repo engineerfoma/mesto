@@ -110,7 +110,7 @@ export default class Api {
             });
     }
 
-    setAvatar ({ url }) {
+    setAvatar (url) {
         const body = {
             avatar: url
         }

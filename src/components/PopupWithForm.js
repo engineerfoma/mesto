@@ -16,11 +16,10 @@ export default class PopupWithForm extends Popup {
         return this._objInputValues;
     }
 
-    // setInputValues(data) {
-    //     this._inputList.forEach((input) => {
-    //         input.value = data[input.name];
-    //     });
-    // } не совсем понимаю как реализовать этот метод, если мне нужно в input.value вставлять изначально вставлять то, что находится в элементе с классами profile__title, profile__subtitle
+    isLoading(state, buttonSelector, loadedText = 'Сохранить', loadingText = 'Сохранение...' ) {
+        state ? (document.querySelector(buttonSelector).textContent = loadedText) :
+        (document.querySelector(buttonSelector).textContent = loadingText);
+    }
 
     setEventListeners() {   
         super.setEventListeners();

@@ -13,8 +13,8 @@
 
 @media (max-width: 767px) {
     .popup__content_confirm {
-        max-width: 282px;
-        min-height: 322px;
+        max-width: 220px;
+        min-height: 60px;
         padding: 24px 25px 25px;
     }
 }
