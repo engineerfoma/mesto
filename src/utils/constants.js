@@ -17,6 +17,6 @@ const cardAddBtn = document.querySelector('.profile__add-button');
 
 const inputName = document.querySelector('.popup__input_type_name');
 const inputAboutMe =  document.querySelector('.popup__input_type_about-me');
-const profileAvatar = document.querySelector('.profile__avatar_edit');
+const profileAvatar = document.querySelector('.profile__avatar-edit');
 
 export { validationConfig, formEdit, formAdd, formAvatar, listContainer, profileEditBtn, cardAddBtn, inputName, inputAboutMe, profileAvatar };
