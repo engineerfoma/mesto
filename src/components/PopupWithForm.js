@@ -17,8 +17,8 @@ export default class PopupWithForm extends Popup {
     }
 
     isLoading(state, buttonSelector, loadedText = 'Сохранить', loadingText = 'Сохранение...' ) {
-        state ? (document.querySelector(buttonSelector).textContent = loadedText) :
-        (document.querySelector(buttonSelector).textContent = loadingText);
+        state ? (document.querySelector(buttonSelector).textContent = loadingText) :
+        (document.querySelector(buttonSelector).textContent = loadedText);
     }
 
     setEventListeners() {   

@@ -69,14 +69,15 @@ const createCard = (item) => {
 }
 
 const addCardHandler = ({ field_title: name, field_source: link }) => {
+    popupCardAdd.isLoading(true, '.popup__save_card', 'Создать');
     api.addCard({ field_title: name, field_source: link })
     .then(data => {
         popupCardAdd.close();
         return cardList.addItem(createCard(data));
     })
-    .catch(err => console.log(`${err}`))
+    .catch(err => console.log(`Ошибка: ${err}`))
     .finally(() => {
-        popupCardAdd.isLoading(false, '.popup__save_card');
+        popupCardAdd.isLoading(false, '.popup__save_card', 'Создать');
     })
 };
 
@@ -85,9 +86,10 @@ const popupCardAdd = new PopupWithForm('.popup_add-card',
 
 const popupEditProfile = new PopupWithForm('.popup_profile',
     { submitHandler: (userData) => {
+        popupEditProfile.isLoading(true, '.popup__save_profile');
         api.setUserInfo(userData)
             .then(res => {
-                userInfo.setUserInfo({ name: res.name, about: res.about });
+                userInfo.setUserInfo({ name: res.name, about: res.about, avatar: res.avatar });
                 popupEditProfile.close();
             })
             .catch(err => console.log(`Ошибка: ${err}`))
@@ -100,12 +102,13 @@ const popupEditProfile = new PopupWithForm('.popup_profile',
 
 const popupEditAvatar =  new PopupWithForm('.popup_avatar',
     {submitHandler: (link) => {
+        popupEditAvatar.isLoading(true, '.popup__save_avatar');
         api.setAvatar(link.field_avatar)
             .then(res => {
                 userInfo.setUserInfo(res);
                 popupEditAvatar.close();
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(`Ошибка: ${err}`))
             .finally(() => {
                 popupEditAvatar.isLoading(false, '.popup__save_avatar');
             })
@@ -113,15 +116,8 @@ const popupEditAvatar =  new PopupWithForm('.popup_avatar',
 })
 
 const handleOpenPopupProfile = () => {
-    api.getUserInfo()
-        .then(data => {
-            userInfo.getUserInfo(data);
-            inputName.value = data.name;
-            inputAboutMe.value = data.about;
-            formProfile.checkFormValidity();
-            popupEditProfile.openPopup();
-        })
-        .catch(err => console.log(`Ошибка: ${err}`));
+    formProfile.resetValidation();
+    popupEditProfile.openPopup();
 }
 
 Promise.all([api.getUserInfo(), api.getCards()])
@@ -129,7 +125,8 @@ Promise.all([api.getUserInfo(), api.getCards()])
         userInfo.setUserInfo(dataUserInfo);
         userInfo.setUserId(dataUserInfo._id);
         cardList.rendererItems(cards);
-    });
+    })
+    .catch(err => console.log(`Ошибка: ${err}`));
 
 profileAvatar.addEventListener('click', () => {
     formAvatarEdit.resetValidation();

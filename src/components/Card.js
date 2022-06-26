@@ -26,8 +26,6 @@ export default class Card {
             return cardElement;
     }
 
-    
-    
     _handleClick = () => {
         this._handlePhotoClick(this._name, this._link)
     }
@@ -43,9 +41,7 @@ export default class Card {
     }
     
     _isLikeState = () => {
-        // this._isLiked() ? this.likeRemove(this._cards) : this.likeAdd(this._cards);
         this._isLiked() ? this._handleRemoveLike(this._cards) : this._handleAddLike(this._cards);
-
     }
     
     _isLiked = () => this._likes.some(item => item._id === this._userId)
@@ -54,7 +50,6 @@ export default class Card {
         if (this._ownerId !== this._userId) {
             this._trachButton.remove()
         }
-        
     }
     
     likeAdd(cards) {
