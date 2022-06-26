@@ -116,6 +116,9 @@ const popupEditAvatar =  new PopupWithForm('.popup_avatar',
 })
 
 const handleOpenPopupProfile = () => {
+    const data = userInfo.getUserInfo();
+    inputName.value = data.name;
+    inputAboutMe.value = data.aboutMe;
     formProfile.resetValidation();
     popupEditProfile.openPopup();
 }
